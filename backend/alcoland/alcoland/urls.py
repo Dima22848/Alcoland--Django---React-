@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/', include(main_router.urls)),  # Основной API-роутер
     path('api/', include('account.urls')),  # Добавляем маршруты из account
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:  # Только в режиме разработки
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

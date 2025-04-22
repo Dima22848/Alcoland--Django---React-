@@ -3,7 +3,9 @@ services:
     name: alcoland-backend
     env: python
     plan: free
-    buildCommand: pip install -r backend/requirements.txt
+    buildCommand: |
+      pip install -r backend/requirements.txt
+      python manage.py collectstatic --noinput
     startCommand: gunicorn alcoland.asgi:application -k uvicorn.workers.UvicornWorker
     envVars:
       - key: DJANGO_SETTINGS_MODULE
