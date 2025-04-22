@@ -187,7 +187,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["alcoland-django-react.onrender.com", "localhost", "127.0.0.1"]
 
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
