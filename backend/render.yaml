@@ -5,9 +5,10 @@ services:
     plan: free
     buildCommand: |
       pip install -r backend/requirements.txt
-      python manage.py migrate --noinput
       python manage.py collectstatic --noinput
-    startCommand: gunicorn alcoland.asgi:application -k uvicorn.workers.UvicornWorker
+    startCommand:
+      python manage.py migrate --noinput
+      gunicorn alcoland.asgi:application -k uvicorn.workers.UvicornWorker
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: alcoland.settings
