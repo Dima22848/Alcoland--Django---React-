@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: |
-      pip install -r alcoland/requirements.txt
+      pip install -r requirements.txt
       python manage.py collectstatic --noinput
     startCommand:
       python manage.py migrate --noinput
@@ -12,10 +12,11 @@ services:
       gunicorn alcoland.asgi:application -k uvicorn.workers.UvicornWorker
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: backend/alcoland.settings
+        value: alcoland.settings
       - key: PYTHON_VERSION
         value: 3.11
       - key: DATABASE_URL
         value: postgresql://alcoland_db_user:jW7Jz6atUSj2qJplS6c1Oxjx0uyFEgAa@dpg-d037i08dl3ps739jsi30-a.oregon-postgres.render.com/alcoland_db
     region: oregon
     rootDir: backend
+
