@@ -12,7 +12,7 @@ services:
       gunicorn alcoland.asgi:application -k uvicorn.workers.UvicornWorker
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: alcoland.settings
+        value: backend/alcoland.settings
       - key: PYTHON_VERSION
         value: 3.11
       - key: DATABASE_URL
