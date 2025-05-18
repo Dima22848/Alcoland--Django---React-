@@ -4,6 +4,7 @@ from django.core.validators import FileExtensionValidator
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+from django.contrib.auth.base_user import BaseUserManager
 
 CITY_CHOICES = [
     ('', ''),
@@ -33,6 +34,33 @@ CITY_CHOICES = [
     ('simferopol', 'Симферополь'),
 ]
 
+
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, nickname, password=None, **extra_fields):
+        if not email:
+            raise ValueError('Email обязателен')
+        if not nickname:
+            raise ValueError('Nickname обязателен')
+
+        email = self.normalize_email(email)
+        user = self.model(email=email, nickname=nickname, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, nickname, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
+
+        return self.create_user(email, nickname, password, **extra_fields)
+
+
 class CustomUser(AbstractUser):
     username = None
     nickname = models.CharField(max_length=50, unique=True, verbose_name='Ник пользователя')
@@ -45,6 +73,8 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = "email"  # Теперь логинимся по email
     REQUIRED_FIELDS = ["nickname"]
+
+    objects = CustomUserManager()
 
     friends = models.ManyToManyField(
         'self',
